@@ -1,0 +1,24 @@
+{
+  "name": "astotameshi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@hongvanpc10/rehype-embed": "^1.0.21",
+    "rehype-document": "^7.0.3",
+    "rehype-format": "^5.0.1",
+    "rehype-parse": "^9.0.1",
+    "rehype-stringify": "^10.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
+    "unified": "^11.0.5",
+    "vfile-reporter": "^8.1.1"
+  }
+}
