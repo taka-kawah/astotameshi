@@ -1,27 +1,27 @@
 import { visit } from "unist-util-visit";
-import {writeFile} from 'node:fs/promises'
+import { writeFile } from 'node:fs/promises'
 
 
 function rehypeTabular() {
   return (tree, _file) => {
     visit(tree, isTabularP, (node) => {
-        console.log(node)
-      }
+      console.log(node)
+    }
     );
   };
 };
 
-function isTabularP(node){
-  if(node.tagName !== 'p') {
+function isTabularP(node) {
+  if (node.tagName !== 'p') {
     return false
   }
 
-  if(node.children.length === 0) {
+  if (node.children.length === 0) {
     return false
   }
-  
+
   const child = node.children[0]
-  if(child.type !== 'text') {
+  if (child.type !== 'text') {
     return false
   }
 
@@ -42,19 +42,12 @@ function isTabularP(node){
   if (colNum < 2) {
     return false
   }
-  
-  rows.forEach(row => {
-    if (row.split('|').length !== colNum) {
-      return false
-    }
-    row = row.replace(/\r/g, "").replace(/\u200b/g, "")
-  });
-  
+
   let colSplitter = encircleBySplitSymbol(rows[1])
   if (!isRightHeader(colSplitter) && !isLeftHeader(colSplitter) && !isCenterHeader(colSplitter)) {
     return false
   }
-  
+
   return true
 }
 
@@ -73,11 +66,11 @@ function encircleBySplitSymbol(colSplitter) {
 }
 
 function isLeftHeader(colSplitter) {
-  return colSplitter.match(/^[|](-+\|)+$/) || colSplitter.match(/^[|](:-+\|)+$/) 
+  return colSplitter.match(/^[|](-+\|)+$/) || colSplitter.match(/^[|](:-+\|)+$/)
 }
 
 function isRightHeader(colSplitter) {
-  return colSplitter.match(/^[|](-+:\|)+$/) 
+  return colSplitter.match(/^[|](-+:\|)+$/)
 }
 
 function isCenterHeader(colSplitter) {
