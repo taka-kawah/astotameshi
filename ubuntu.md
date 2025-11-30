@@ -110,5 +110,5 @@ git commit -m "first commit"
 
 - sudo apt update
 - エラーメッセージをそのまま検索
-- 権限チエック（chmod / chown）
+- 権限チェック（chmod / chown）
 - systemctl status でサービス確認
