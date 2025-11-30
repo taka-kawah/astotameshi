@@ -25,11 +25,11 @@ function isTabularP(node){
     return false
   }
 
-  const val = child.value
+  const val = sanitize(child.value)
   if (!val.includes('|')) {
     return false
   }
-  if (!val.includes('\n') || !val.includes('\r\n')) {
+  if (!val.includes('\n')) {
     return false
   }
 
@@ -50,7 +50,7 @@ function isTabularP(node){
     row = row.replace(/\r/g, "").replace(/\u200b/g, "")
   });
   
-  let colSplitter = encircleBySplitSymbol(sanitize(rows[1]))
+  let colSplitter = encircleBySplitSymbol(rows[1])
   if (!isRightHeader(colSplitter) && !isLeftHeader(colSplitter) && !isCenterHeader(colSplitter)) {
     return false
   }
