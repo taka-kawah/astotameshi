@@ -1,11 +1,78 @@
 import { visit } from "unist-util-visit";
-import { writeFile } from 'node:fs/promises'
 
 
 function rehypeTabular() {
   return (tree, _file) => {
-    visit(tree, isTabularP, (node) => {
-      console.log(node)
+    visit(tree, isTabularP, (node, index, parent) => {
+      const headerAndRows = node.children[0].value.split('\n')
+      const header = headerAndRows[0]
+      const splitter = headerAndRows[1]
+      const rows = headerAndRows.slice(2)
+
+      let tdTextAlign = ""
+      if (isCenterHeader(splitter)) {
+        tdTextAlign = "center"
+      } else if (isRightHeader(splitter)) {
+        tdTextAlign = "right"
+      } else if (isLeftHeader(splitter)) {
+        tdTextAlign = "left"
+      }
+
+      // ヘッダー
+      const thead = {
+        type: "element",
+        tagName: "thead",
+        properties: {
+          style: "border: 1px solid black;background-color: azure;"
+        },
+        children: [{
+          type: "element",
+          tagName: "tr",
+          children: decircleBySplitSymbol(header).split('|').map(val => ({
+            type: "element",
+            tagName: "th",
+            properties: {
+              scope: "col",
+              rowspan: "1",
+              style: "border: 1px solid gray;"
+            },
+            children: [{ type: "text", value: val }]
+          }))
+        }]
+      }
+
+      //行
+      const tbody = {
+        type: "element",
+        tagName: "tbody",
+        properties: {
+          style: "border: 1px solid black;"
+        },
+        children: rows.map(row => ({
+          type: "element",
+          tagName: "tr",
+          children: decircleBySplitSymbol(row).split('|').map(val => ({
+            type: "element",
+            tagName: "td",
+            properties: {
+              style: `border: 1px solid black;text-align: ${tdTextAlign}`
+            },
+            children: [{ type: "text", value: val }]
+          }))
+        }))
+      }
+
+      //表
+      parent.children[index] = {
+        type: "element",
+        tagName: "table",
+        properties: {
+          style: "border-collapse: collapse; border: 1px solid black;width: 800px"
+        },
+        children: [thead, tbody]
+      }
+
+      return 'skip'
     }
     );
   };
@@ -55,14 +122,24 @@ function sanitize(str) {
   return str.replace(/\r/g, "").replace(/\u200b/g, "")
 }
 
-function encircleBySplitSymbol(colSplitter) {
-  if (!colSplitter.startsWith('|')) {
-    colSplitter = '|' + colSplitter
+function encircleBySplitSymbol(row) {
+  if (!row.startsWith('|')) {
+    row = '|' + row
   }
-  if (!colSplitter.endsWith('|')) {
-    colSplitter += '|'
+  if (!row.endsWith('|')) {
+    row += '|'
   }
-  return colSplitter
+  return row
+}
+
+function decircleBySplitSymbol(row) {
+  if (row.startsWith('|')) {
+    row = row.substring(1)
+  }
+  if (row.endsWith('|')) {
+    row = row.substring(0, row.length - 1)
+  }
+  return row
 }
 
 function isLeftHeader(colSplitter) {
