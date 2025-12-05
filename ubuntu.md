@@ -30,38 +30,48 @@ Ubuntu のルートは `/`（スラッシュ）で表されます。
 ## 3. コマンドの基本
 
 ### 移動
+```
 cd /path/to/dir  
 cd  
 cd ..
+```
 
 ### ファイル一覧
+```
 ls  
 ls -l  
 ls -a
+```
 
 ### 作成・削除
+```
 mkdir test  
 touch file.txt  
 rm file.txt  
 rm -r folder
+```
 
 ### 編集
+```
 nano file.txt  
 code .
+```
 
 ---
 
 ## 4. パッケージ管理（apt）
 
 ### よく使う apt コマンド
+```
 sudo apt update  
 sudo apt upgrade  
 sudo apt install xxx  
 sudo apt remove xxx
-
+```
 例：Git のインストール  
+```
 sudo apt install git
-
+```
 ---
 
 ## 5. 権限と sudo
@@ -74,20 +84,25 @@ sudo apt install git
 ## 6. WSL + Ubuntu で Windows と連携
 
 ### Windows へファイルをコピー
+```
 cp file.txt /mnt/c/Users/<名前>/Desktop/
+```
 
 ### Windows のファイルを Ubuntu で参照
+```
 ls /mnt/c/
+```
 
 ---
 
 ## 7. 覚えておくと便利なコマンド
 
+```
 pwd  
 df -h  
 free -h  
 ps aux
-
+```
 ---
 
 ## 8. 開発者向け Tips
@@ -96,14 +111,16 @@ ps aux
 nvm を使うのがおすすめ。
 
 ### Python 仮想環境
+```
 python3 -m venv venv  
 source venv/bin/activate
-
+```
 ### Git
+```
 git init  
 git add .  
 git commit -m "first commit"
-
+```
 ---
 
 ## 9. 困ったら
